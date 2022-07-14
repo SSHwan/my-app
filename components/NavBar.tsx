@@ -1,8 +1,8 @@
 function NavBar() {
   return (
-    <div className="bg-gray-700 flex justify-around text-white">
+    <nav className="bg-gray-700 flex justify-around text-white py-5 mb-7">
       <div>My-App</div>
-    </div>
+    </nav>
   )
 }
 

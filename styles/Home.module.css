@@ -1,15 +1,15 @@
 .container {
   padding: 0 2rem;
+  min-height: calc(100vh - 201px);
 }
 
 .main {
-  min-height: 100vh;
   padding: 4rem 0;
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  width: 80%;
+  margin: auto;
 }
 
 .footer {
