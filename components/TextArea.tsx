@@ -9,7 +9,7 @@ interface textAreaProps {
 const TextArea = ({value, onChange, placeHolder = ''}: textAreaProps) => {
   return (
     <textarea
-      className="py-1 px-2 border rounded-lg resize-none"
+      className="py-1 px-2 border rounded-lg resize-none w-full"
       value={value}
       placeholder={placeHolder}
       onChange={onChange}

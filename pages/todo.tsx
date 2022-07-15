@@ -8,14 +8,9 @@ interface todo {
   content: string;
 }
 
-const defaultTodo = {
-  id: 0,
-  content: '아에이오우~영우~!'
-}
-
 const Todo: React.FunctionComponent = () => {
   const [todoText, setTodoText] = useState('');
-  const [todoList, setTodoList] = useState<todo[]>([defaultTodo]);
+  const [todoList, setTodoList] = useState<todo[]>([]);
   const [selectedId, setSelectedId] = useState(-1);
   const [updateText, setUpdateText] = useState('');
   const onClickSave = () => {
@@ -31,21 +26,34 @@ const Todo: React.FunctionComponent = () => {
     );
     setTodoText('');
   };
+  const onClickCancel = () => {
+    setTodoText('');
+  }
   const onChangeTodo = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTodoText(e.target.value);
   };
   const onClickUpdate = (id: number) => {
     const selectedTodo = todoList.find((todo) => todo.id === id);
     const selectedContent = selectedTodo ? selectedTodo.content : '';
-    console.log(id, selectedTodo, selectedContent);
     setSelectedId(id);
     setUpdateText(selectedContent);
   };
   const onClickDelete = (id: number) => {
-
+    setTodoList(todoList.filter((todo) => todo.id !== id));
   };
   const onChangeUpdateText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setUpdateText(e.target.value);
+  };
+  const onClickUpdateSave = (id: number) => {
+    if (updateText == '') return;
+    setTodoList(todoList.map((todo) => {
+      if (todo.id === id) todo.content = updateText;
+      return todo;
+    }));
+    setSelectedId(-1);
+  };
+  const onClickUpdateCancel = () => {
+    setSelectedId(-1);
   };
   console.log(todoList);
   return (
@@ -55,8 +63,9 @@ const Todo: React.FunctionComponent = () => {
       <div className="px-4">
         <TextArea value={todoText} onChange={onChangeTodo} placeHolder="write your to do"/>
       </div>
-      <div className="flex justify-end mt-1">
+      <div className="flex justify-end gap-2 pr-2 mt-1 mb-2">
         <Button text="save" onClick={onClickSave} />
+        <Button text="cancel" onClick={onClickCancel} />
       </div>
       <div className="mt-5">
         <ul className="flex flex-col gap-3">
@@ -65,12 +74,22 @@ const Todo: React.FunctionComponent = () => {
               return (
                 <li
                   key={id}
-                  className="border rounded-lg py-2 px-4"
+                  className="border rounded-lg py-2"
                 >
                   {
                     selectedId === id
-                    ? <TextArea value={updateText} onChange={onChangeUpdateText}/>
-                    : <p className="whitespace-pre-wrap">{content}</p>
+                    ? (
+                    <>
+                      <div className="px-4">
+                        <TextArea value={updateText} onChange={onChangeUpdateText} placeHolder="write your to do"/>
+                      </div>
+                      <div className="flex justify-end gap-2 pr-2 mt-1 mb-2">
+                        <Button text="save" onClick={() => onClickUpdateSave(id)} />
+                        <Button text="cancel" onClick={onClickUpdateCancel} />
+                      </div>
+                    </>
+                    )
+                    : <p className="whitespace-pre-wrap px-4">{content}</p>
                   }
                   <div className="flex justify-end gap-3">
                     <PencilIcon onClick={() => onClickUpdate(id)} className="h-5 w-5 cursor-pointer"/>
