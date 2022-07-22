@@ -1,9 +1,14 @@
+import { Client } from '@notionhq/client'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import Todo from './todo'
 
-const Home: NextPage = () => {
+interface Props {
+  results: any;
+}
+const notion = new Client({auth: process.env.NOTION_TOKEN});
+const Home: NextPage<Props> = ({results}) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -20,3 +25,14 @@ const Home: NextPage = () => {
 }
 
 export default Home
+
+export async function getServerSideProps() {
+  const results = await notion.databases.query({
+    database_id: `${process.env.NOTION_DATABASE_ID}`,
+  });
+  return {
+      props: {
+        results
+      }
+  }
+}
