@@ -7,7 +7,7 @@ import Todo from './todo'
 interface Props {
   results: any;
 }
-const notion = new Client({auth: process.env.NOTION_TOKEN});
+// const notion = new Client({auth: process.env.NOTION_TOKEN});
 const Home: NextPage<Props> = ({results}) => {
   return (
     <div className={styles.container}>
@@ -26,13 +26,13 @@ const Home: NextPage<Props> = ({results}) => {
 
 export default Home
 
-export async function getServerSideProps() {
-  const results = await notion.databases.query({
-    database_id: `${process.env.NOTION_DATABASE_ID}`,
-  });
-  return {
-      props: {
-        results
-      }
-  }
-}
+// export async function getServerSideProps() {
+//   const results = await notion.databases.query({
+//     database_id: `${process.env.NOTION_DATABASE_ID}`,
+//   });
+//   return {
+//       props: {
+//         results
+//       }
+//   }
+// }
