@@ -5,17 +5,20 @@ interface TodoAction {
   type: TodoEnum;
   payload: {
     id?: number,
-    content?: string
+    content?: string,
+    list?: TodoType[]
   };
 }
 
 const todoReducer = (todoList: TodoType[], action: TodoAction) => {
   const { type, payload } = action;
   switch (type) {
+    case TodoEnum.INIT:
+      return payload.list as TodoType[];
+
     case TodoEnum.ADD:
-      const id = todoList.length > 0 ? todoList[0].id + 1 : 0;
       const todo = {
-        id, 
+        id: payload.id,
         content: payload.content
       } as TodoType;
       return [todo, ...todoList];
@@ -34,6 +37,13 @@ const todoReducer = (todoList: TodoType[], action: TodoAction) => {
     default:
       throw new Error('Unhandled action');
   }
+}
+
+const getTodoList = () => {
+  fetch('/api/todo')
+  .then((response) => response.json())
+  .then((data) => console.log(data))
+  .catch((err) => console.log('error >> ', err));
 }
 
 export default todoReducer;

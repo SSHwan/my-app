@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+
+const plugin = require('tailwindcss/plugin')
+
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
@@ -7,5 +10,15 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    plugin(({ addComponents }) =>  {
+      addComponents({
+        '.body_container': {
+          minHeight: 'calc(100vh - 201px)',
+          width: '80%',
+          margin: 'auto'
+        },
+      })
+    })
+  ],
 }

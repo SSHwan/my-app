@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { PencilIcon, TrashIcon } from '@heroicons/react/outline';
 import WriteTodo from "../../components/todo/WriteTodo";
 import TodoType from "../../interface/todo";
@@ -11,9 +11,20 @@ const Todo: React.FunctionComponent = () => {
   const [todoList, todoDispatch] = useReducer(todoReducer, []);
   const [selectedId, setSelectedId] = useState(-1);
   const [updateText, setUpdateText] = useState('');
+  useEffect(() => {
+    fetch('/api/todo')
+    .then((response) => response.json())
+    .then((data) => todoDispatch({type: TodoEnum.INIT, payload: {list: data}}));
+  }, []);
   const onClickSave = () => {
     if (todoText == '') return;
-    todoDispatch({type: TodoEnum.ADD, payload: {content: todoText}});
+    const id = todoList.length > 0 ? todoList[0].id + 1 : 0;
+    const todo = { id, content: todoText };
+    todoDispatch({type: TodoEnum.ADD, payload: todo});
+    fetch('/api/todo', {
+      method:'POST',
+      body: JSON.stringify(todo)
+    });
     setTodoText('');
   };
   const onClickCancel = () => {
@@ -30,13 +41,22 @@ const Todo: React.FunctionComponent = () => {
   };
   const onClickDelete = (id: number) => {
     todoDispatch({type: TodoEnum.DELETE, payload: {id}});
+    fetch('/api/todo', {
+      method:'DELETE',
+      body: JSON.stringify(id)
+    });
   };
   const onChangeUpdateText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setUpdateText(e.target.value);
   };
   const onClickUpdateSave = (id: number) => {
     if (updateText == '') return;
-    todoDispatch({type: TodoEnum.UPDATE, payload: {id, content: updateText}});
+    const todo = {id, content: updateText};
+    todoDispatch({type: TodoEnum.UPDATE, payload: todo});
+    fetch('/api/todo', {
+      method:'PATCH',
+      body: JSON.stringify(todo)
+    });
     setSelectedId(-1);
   };
   const onClickUpdateCancel = () => {

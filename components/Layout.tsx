@@ -9,7 +9,7 @@ function Layout({ children }: LayoutProps) {
   return (
     <>
       <NavBar />
-        <div>{children}</div>
+        <div className='body_container'>{children}</div>
       <Footer />
     </>
   )

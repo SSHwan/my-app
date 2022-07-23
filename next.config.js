@@ -1,6 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/window",
+        permanent: true
+      }
+    ]
+  },
   async rewrites() {
     return [
       {
