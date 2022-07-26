@@ -18,6 +18,11 @@ module.exports = {
           width: '80%',
           margin: 'auto'
         },
+        '.ellipsis': {
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis'
+        }
       })
     })
   ],

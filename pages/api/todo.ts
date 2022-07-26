@@ -24,7 +24,7 @@ const get = async () => {
   try {
     await client.connect();
     const collection = getCollection();
-    const cursor = collection.find().sort({id:-1});
+    const cursor = collection.find().sort({_id:-1});
     const results = await cursor.toArray();
     return results;
   } finally {

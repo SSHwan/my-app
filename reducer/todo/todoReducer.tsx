@@ -39,11 +39,4 @@ const todoReducer = (todoList: TodoType[], action: TodoAction) => {
   }
 }
 
-const getTodoList = () => {
-  fetch('/api/todo')
-  .then((response) => response.json())
-  .then((data) => console.log(data))
-  .catch((err) => console.log('error >> ', err));
-}
-
 export default todoReducer;
