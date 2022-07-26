@@ -32,50 +32,47 @@ const windowHandler = async (method: string | undefined, body: WindowType) => {
   }
 }
 
-const get = async () => {
-  try {
-    await client.connect();
-    const collection = getCollection();
-    const cursor = collection.find().sort({_id:-1});
-    const results = await cursor.toArray();
-    return results;
-  } finally {
-    await client.close();
-  }
-}
-const insert = async (window: WindowType) => {
-  try {
-    await client.connect();
-    const collection = getCollection();
-    const result = await collection.insertOne(window);
-    return result;
-  } finally {
-    await client.close();
-  }
-}
-const update = async ({id, content}: TodoType) => {
-  try {
-    await client.connect();
-    const collection = getCollection();
-    const result = await collection.updateOne({id}, {$set: {content}});
-    return result;
-  } finally {
-    await client.close();
-  }
-}
-const remove = async (id: number) => {
-  try {
-    await client.connect();
-    const collection = getCollection();
-    const result = await collection.deleteOne({id});
-    return result;
-  } finally {
-    await client.close();
-  }
-}
+// const get = async () => {
+//   try {
+//     await client.connect();
+//     const collection = getCollection();
+//     const cursor = collection.find().sort({_id:-1});
+//     const results = await cursor.toArray();
+//     return results;
+//   } finally {
+//     await client.close();
+//   }
+// }
+// const insert = async (window: WindowType) => {
+//   try {
+//     await client.connect();
+//     const collection = getCollection();
+//     const result = await collection.insertOne(window);
+//     return result;
+//   } finally {
+//     await client.close();
+//   }
+// }
+// const update = async ({id, content}: TodoType) => {
+//   try {
+//     await client.connect();
+//     const collection = getCollection();
+//     const result = await collection.updateOne({id}, {$set: {content}});
+//     return result;
+//   } finally {
+//     await client.close();
+//   }
+// }
+// const remove = async (id: number) => {
+//   try {
+//     await client.connect();
+//     const collection = getCollection();
+//     const result = await collection.deleteOne({id});
+//     return result;
+//   } finally {
+//     await client.close();
+//   }
+// }
 const getCollection = () => {
   return client.db(process.env.MONGO_DB_NAME).collection('window');
-}
-const getList = (collection) => {
-  return collection.find().sort({_id:-1});
 }
