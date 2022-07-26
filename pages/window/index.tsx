@@ -34,18 +34,18 @@ const Window = () => {
     .then((response) => response.json())
     .then((data) => setWindows(data));
   }
-  const addFrame = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log('inputs >> ', inputs);
-    const height = Number(inputs.height);
-    const width = Number(inputs.width);
-    const topHeight = Number(inputs.topHeight);
-    const bottomHeight = height - topHeight;
-    const type901 = width - 40;
-    const type7801_1 = topHeight - 27;
-    const type7801_2 = bottomHeight - 97;
-    const type4601 = (width - 192) / 2;
-  }
+  // const addFrame = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   console.log('inputs >> ', inputs);
+  //   const height = Number(inputs.height);
+  //   const width = Number(inputs.width);
+  //   const topHeight = Number(inputs.topHeight);
+  //   const bottomHeight = height - topHeight;
+  //   const type901 = width - 40;
+  //   const type7801_1 = topHeight - 27;
+  //   const type7801_2 = bottomHeight - 97;
+  //   const type4601 = (width - 192) / 2;
+  // }
   // const [inputs, setInputs] = useState({
   //   height: '',
   //   width: '',
