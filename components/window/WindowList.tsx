@@ -1,13 +1,16 @@
-import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Button } from "@mui/material";
 import WindowType from "../../interface/window";
-import { ExpandMore } from "@mui/icons-material";
+import { ExpandMore, CreateOutlined } from "@mui/icons-material";
 
 interface WindowListProps {
   windows: WindowType[];
+  onClickUpdate: Function;
 }
 
-const WindowList = ({windows}: WindowListProps) => {
-  console.log(windows);
+const WindowList = ({windows, onClickUpdate}: WindowListProps) => {
+  const onClickEditTitle = (window: WindowType) => {
+    onClickUpdate(window)
+  }
   return (
     <>
       {
@@ -22,11 +25,13 @@ const WindowList = ({windows}: WindowListProps) => {
               <div>{window.title}</div>
             </AccordionSummary>
             <AccordionDetails>
-              <div>
-                {/* {window._id} */}
-              </div>
-              <div>
-                {new Date(window.createdDate)?.toLocaleString()}
+              <div className="flex justify-between">
+                <div>
+                  { window.createdDate ? new Date(window.createdDate).toLocaleString() : ''}
+                </div>
+                <div>
+                  <Button variant="outlined" startIcon={<CreateOutlined/>} onClick={() => onClickEditTitle(window)}>제목 수정</Button>
+                </div>
               </div>
             </AccordionDetails>
           </Accordion>

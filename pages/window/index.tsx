@@ -11,13 +11,44 @@ interface Inputs {
   topHeight: string;
 }
 
+interface DialogProps {
+  open: boolean;
+  submit: Function;
+  isUpdate: boolean;
+  existData: WindowType | null;
+}
+
+const defaultInputs: WindowType = {
+  _id: '',
+  title: '',
+  windowType: ''
+}
+
 const Window = () => {
-  const [open, setOpen] = useState(false);
+  const [inputs, setInputs] = useState(defaultInputs);
+  const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputs((inputs) => {
+      return {...inputs, title: e.target.value}
+    });
+  }
+  const onChangeWindowType = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputs((inputs) => {
+      return {...inputs, windowType: e.target.value}
+    });
+  }
+  const [dialogProps, setDialogProps] = useState({open: false} as DialogProps);
   const onClickNew = () => {
-    setOpen(true);
+    setInputs(defaultInputs);
+    setDialogProps({open: true, submit: addWindow, isUpdate: false, existData: null});
+  }
+  const onClickUpdate = (window: WindowType) => {
+    setInputs(window);
+    setDialogProps({open: true, submit: updateWindow, isUpdate: true, existData: window});
   }
   const handleClose = () => {
-    setOpen(false);
+    setDialogProps((props) => {
+      return {...props, open: false}
+    });
   }
   const [windows, setWindows] = useState([]);
   useEffect(() => {
@@ -25,11 +56,27 @@ const Window = () => {
     .then((response) => response.json())
     .then((data) => setWindows(data));
   }, []);
-  const addWindow = (window: WindowType) => {
-    window.createdDate = new Date();
+  const addWindow = ({title, windowType}: WindowType) => {
     fetch('/api/window', {
-      method:'POST',
-      body: JSON.stringify(window)
+      method: 'POST',
+      body: JSON.stringify({
+        title,
+        windowType,
+        createdDate: new Date()
+      })
+    })
+    .then((response) => response.json())
+    .then((data) => setWindows(data));
+  }
+  const updateWindow = ({_id, title}: WindowType) => {
+    console.log('update > ', _id, title);
+    fetch('api/window', {
+      method: 'PATCH',
+      body: JSON.stringify({
+        _id,
+        title,
+        updatedDate: new Date()
+      })
     })
     .then((response) => response.json())
     .then((data) => setWindows(data));
@@ -81,8 +128,16 @@ const Window = () => {
       <div className="flex justify-end mb-7">
         <Button variant="outlined" startIcon={<AddCircleOutlineIcon/>} onClick={onClickNew}>새로 만들기</Button>
       </div>
-      <WindowDialog open={open} handleClose={handleClose} addWindow={addWindow} />
-      <WindowList windows={windows} />
+      <WindowDialog
+        open={dialogProps.open}
+        handleClose={handleClose}
+        submit={dialogProps.submit}
+        inputs={inputs}
+        onChangeTitle={onChangeTitle}
+        onChangeWindowType={onChangeWindowType}
+        isUpdate={dialogProps.isUpdate}
+      />
+      <WindowList windows={windows} onClickUpdate={onClickUpdate} />
       {/* <div>상하 창문</div>
       <div>높이</div>
       <div>넓이</div>

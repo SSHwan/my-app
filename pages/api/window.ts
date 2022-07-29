@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import client from '../../common/mongoDB'
 import WindowType from '../../interface/window';
@@ -17,10 +18,10 @@ const windowHandler = async (method: string | undefined, body: WindowType) => {
 
     if (method === 'POST') {
       await collection.insertOne(body);
+    } else if (method === 'PATCH') {
+      const { _id, title, updatedDate } = body;
+      await collection.updateOne({'_id': new ObjectId(_id)}, {$set: {title, updatedDate}});
     }
-    // } else if (method === 'PATCH') {
-    //   const {id, content } = JSON.parse(body);
-    //   update({id, content} as TodoType).then(() => res.status(200).json('success'));
     // } else if (method === 'DELETE') {
     //   const id = JSON.parse(body);
     //   remove(id).then(() => res.status(200).json('success'));
