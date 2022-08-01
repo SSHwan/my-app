@@ -1,16 +1,14 @@
 import { Accordion, AccordionDetails, AccordionSummary, Button } from "@mui/material";
 import WindowType from "../../interface/window";
-import { ExpandMore, CreateOutlined } from "@mui/icons-material";
+import { ExpandMore, CreateOutlined, DeleteOutlined } from "@mui/icons-material";
 
 interface WindowListProps {
   windows: WindowType[];
   onClickUpdate: Function;
+  onClickDelete: Function;
 }
 
-const WindowList = ({windows, onClickUpdate}: WindowListProps) => {
-  const onClickEditTitle = (window: WindowType) => {
-    onClickUpdate(window)
-  }
+const WindowList = ({windows, onClickUpdate, onClickDelete}: WindowListProps) => {
   return (
     <>
       {
@@ -29,8 +27,9 @@ const WindowList = ({windows, onClickUpdate}: WindowListProps) => {
                 <div>
                   { window.createdDate ? new Date(window.createdDate).toLocaleString() : ''}
                 </div>
-                <div>
-                  <Button variant="outlined" startIcon={<CreateOutlined/>} onClick={() => onClickEditTitle(window)}>제목 수정</Button>
+                <div className="flex gap-5">
+                  <Button variant="outlined" startIcon={<DeleteOutlined/>} onClick={() => onClickDelete(window._id)}>삭제</Button>
+                  <Button variant="outlined" startIcon={<CreateOutlined/>} onClick={() => onClickUpdate(window)}>제목 수정</Button>
                 </div>
               </div>
             </AccordionDetails>

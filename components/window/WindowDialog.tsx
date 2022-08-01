@@ -1,12 +1,12 @@
 import { Button, Dialog, DialogActions, DialogContent, FormControl, FormControlLabel, Radio, RadioGroup, TextField } from "@mui/material";
-import React from "react";
+import React, { useRef } from "react";
 import WindowEnum from "../../enum/windowEnum";
 import WindowType from "../../interface/window";
 
 interface WindowDialogProps {
   open: boolean;
   handleClose: any;
-  submit: Function,
+  submit: Function;
   inputs: WindowType;
   onChangeTitle: React.ChangeEventHandler<HTMLInputElement>;
   onChangeWindowType: (event: React.ChangeEvent<HTMLInputElement>, value: string) => void;
@@ -14,10 +14,12 @@ interface WindowDialogProps {
 }
 
 const WindowDialog = ({open, handleClose, submit, inputs, onChangeTitle, onChangeWindowType, isUpdate}: WindowDialogProps) => {
+  const submitRef = useRef(null);
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    (submitRef.current as any).disabled = true;
     e.preventDefault();
-    submit(inputs);
     handleClose();
+    submit(inputs);
   }
   const disableSubmit = (inputs.title && inputs.windowType) ? false : true;
   return (
@@ -53,7 +55,8 @@ const WindowDialog = ({open, handleClose, submit, inputs, onChangeTitle, onChang
               </FormControl>
           </DialogContent>
           <DialogActions>
-            <Button type="submit" disabled={disableSubmit}>
+            <Button onClick={handleClose}>취소</Button>
+            <Button ref={submitRef} type="submit" disabled={disableSubmit}>
               { isUpdate ? '수정' : '만들기' }
             </Button>
           </DialogActions>

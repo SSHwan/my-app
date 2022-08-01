@@ -4,6 +4,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import WindowDialog from "../../components/window/WindowDialog";
 import WindowType from "../../interface/window";
 import WindowList from "../../components/window/WindowList";
+import ConfirmDialog from "../../components/window/ConfirmDialog";
 
 interface Inputs {
   height: string;
@@ -49,6 +50,26 @@ const Window = () => {
     setDialogProps((props) => {
       return {...props, open: false}
     });
+  }
+  const onClickDelete = (_id: string) => {
+    setConfirmProps({open: true, id: _id});
+  }
+  const [confirmProps, setConfirmProps] = useState({open: false, id: ''});
+  const handleConfirmClose = () => {
+    setConfirmProps((props) => {
+      return {...props, open: false}
+    });
+  }
+  const onSubmitDelete = () => {
+    fetch('/api/window', {
+      method: 'DELETE',
+      body: JSON.stringify({
+        _id: confirmProps.id,
+        deletedDate: new Date()
+      })
+    })
+    .then((response) => response.json())
+    .then((data) => setWindows(data));
   }
   const [windows, setWindows] = useState([]);
   useEffect(() => {
@@ -137,7 +158,17 @@ const Window = () => {
         onChangeWindowType={onChangeWindowType}
         isUpdate={dialogProps.isUpdate}
       />
-      <WindowList windows={windows} onClickUpdate={onClickUpdate} />
+      <ConfirmDialog
+        open={confirmProps.open}
+        handleClose={handleConfirmClose}
+        title="삭제하시겠습니까?"
+        submit={onSubmitDelete}
+      />
+      <WindowList
+        windows={windows}
+        onClickUpdate={onClickUpdate}
+        onClickDelete={onClickDelete}
+      />
       {/* <div>상하 창문</div>
       <div>높이</div>
       <div>넓이</div>
