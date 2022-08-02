@@ -90,7 +90,6 @@ const Window = () => {
     .then((data) => setWindows(data));
   }
   const updateWindow = ({_id, title}: WindowType) => {
-    console.log('update > ', _id, title);
     fetch('api/window', {
       method: 'PATCH',
       body: JSON.stringify({

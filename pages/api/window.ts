@@ -23,10 +23,11 @@ const windowHandler = async (method: string | undefined, body: WindowType) => {
       await collection.updateOne({'_id': new ObjectId(_id)}, {$set: {title, updatedDate}});
     } else if (method === 'DELETE') {
       const { _id, deletedDate } = body;
-      await collection.deleteOne({'_id': new ObjectId(_id)});
+      // await collection.deleteOne({'_id': new ObjectId(_id)});
+      await collection.updateOne({'_id': new ObjectId(_id)}, {$set: {deletedDate}});
     }
 
-    return await collection.find().sort({_id:-1}).toArray();
+    return await collection.find({deletedDate: {$exists: false}}).sort({_id:-1}).toArray();
   } finally {
     await client.close();
   }
