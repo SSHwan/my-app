@@ -14,9 +14,9 @@ interface WindowDialogProps {
 }
 
 const WindowDialog = ({open, handleClose, submit, inputs, onChangeTitle, onChangeWindowType, isUpdate}: WindowDialogProps) => {
-  const submitRef = useRef(null);
+  const submitRef = useRef<HTMLButtonElement>(null);
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    (submitRef.current as any).disabled = true;
+    (submitRef.current as HTMLButtonElement).disabled = true;
     e.preventDefault();
     handleClose();
     submit(inputs);

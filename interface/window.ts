@@ -1,3 +1,7 @@
+import FixWindowFrameType from "./fixWindowFrame";
+import UpperWindowFrameType from "./upperWindowFrame";
+import WindowFrameType from "./windowFrame";
+
 export default interface WindowType {
   _id?: string;
   title: string;
@@ -5,4 +9,5 @@ export default interface WindowType {
   createdDate?: Date;
   updatedDate?: Date;
   deletedDate?: Date;
+  frames?: UpperWindowFrameType[] & FixWindowFrameType[] & WindowFrameType[];
 }
