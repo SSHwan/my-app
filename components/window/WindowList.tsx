@@ -24,11 +24,11 @@ const WindowList = ({windows, onClickUpdate, onClickDelete}: WindowListProps) =>
               <div>{window.title}</div>
             </AccordionSummary>
             <AccordionDetails>
-              <div className="flex justify-between">
+              <div className="flex flex-col gap-4">
                 <div>
                   { window.createdDate ? new Date(window.createdDate).toLocaleString() : ''}
                 </div>
-                <div className="flex gap-5">
+                <div className="flex justify-end gap-5">
                   <Button variant="outlined" startIcon={<DeleteOutlined/>} onClick={() => onClickDelete(window._id)}>삭제</Button>
                   <Button variant="outlined" startIcon={<CreateOutlined/>} onClick={() => onClickUpdate(window)}>제목 수정</Button>
                   <Link href={{ pathname: `/window/${window._id}`, query: { window: JSON.stringify(window) }}} >
