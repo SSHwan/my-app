@@ -19,7 +19,7 @@ const defaultInputs: WindowType = {
   windowType: ''
 }
 
-const Window = ({results}: any) => {
+const Window = () => {
   const [inputs, setInputs] = useState(defaultInputs);
   const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputs((inputs) => {
@@ -65,12 +65,12 @@ const Window = ({results}: any) => {
     .then((response) => response.json())
     .then((data) => setWindows(data));
   }
-  const [windows, setWindows] = useState(results as WindowType[]);
-  // useEffect(() => {
-  //   fetch('/api/window')
-  //   .then((response) => response.json())
-  //   .then((data) => setWindows(data));
-  // }, []);
+  const [windows, setWindows] = useState([]);
+  useEffect(() => {
+    fetch('/api/window')
+    .then((response) => response.json())
+    .then((data) => setWindows(data));
+  }, []);
   const addWindow = ({title, windowType}: WindowType) => {
     fetch('/api/window', {
       method: 'POST',
@@ -127,11 +127,11 @@ const Window = ({results}: any) => {
 
 export default Window;
 
-export async function getServerSideProps() {
-  const results = await ( await fetch('http://localhost:3000/api/window')).json();
-  return {
-      props: {
-        results
-      }
-  }
-}
+// export async function getServerSideProps() {
+//   const results = await ( await fetch('http://localhost:3000/api/window')).json();
+//   return {
+//       props: {
+//         results
+//       }
+//   }
+// }
